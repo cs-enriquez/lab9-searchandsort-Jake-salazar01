@@ -7,7 +7,12 @@ using namespace std;
 //   bonus! try to implement your function so that it can accept
 //     many types of data (int, char, string, etc.)
 template <typename flexibleType> // ???
-void printArray(...) {}
+void printArray(flexibleType arr[], int size) {
+    for(int i = 0; i < size; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
 
 // Implement a sequential search algorithm
 // your function should search for a target value (target)
@@ -15,6 +20,11 @@ void printArray(...) {}
 // return true if target exists in the array within this range,
 //    return false otherwise
 bool seqSearch(string target, string arr[], int start, int end) {
+    for(int i = start; i <= end; i++){
+        if(arr[i] == target){
+            return true;
+        }
+    }
     return false;
 }
 
@@ -22,6 +32,20 @@ bool seqSearch(string target, string arr[], int start, int end) {
 // Return true if target exists in the array with size n,
 //    return false otherwise 
 bool binSearch(float target, float arr[], int n) {
+    int left = 0;
+    int right = n - 1;
+    while(left <= right){
+        int mid = left + (right - left) / 2;
+        if(arr[mid] == target){
+            return true;
+        }
+        else if(arr[mid] < target){
+            left = mid + 1;
+        }
+        else{
+            right = mid - 1;
+        }
+    }
     return false;	
 }
 
@@ -29,11 +53,27 @@ bool binSearch(float target, float arr[], int n) {
 // Return true if target exists in the array with size n
 //   return false otherwise
 bool binSearchR(char target, char charray[], int n) {
+    bool binSearchRHelper(char target, char charray[], int left, int right);
+    return binSearchRHelper(target, charray, 0, n - 1);
+}
     // base case
+    bool binSearchRHelper(char target, char charray[], int left, int right){
+        if(left > right){
+            return false;
+        }
+    
+    int mid = left + (right - left) / 2;
 
     //general case
-
-    return false;
+    if(charray[mid] == target){
+        return true;
+    }
+    else if(charray[mid] < target){
+        return binSearchRHelper(target, charray, mid + 1, right);
+    }
+    else{
+        return binSearchRHelper(target, charray, left, mid - 1);
+    }
 }
 
 // Implement a brand new sorting algorithm
@@ -57,10 +97,25 @@ Step 3: Finally, use your two functions above to complete the following in newSo
         *** You can make this recursive, if you wish!
 */
 
-void swap(double darray[], ...) {}
-
-int minFind(double darray[], ...) {
-    return -1;
+void swap(double darray[], int i, int k) {
+    double temp = darray[i];
+    darray[i] = darray[k];
+    darray[k] = temp;
 }
 
-void newSort(double darray[], int n) {}
+int minFind(double darray[], int n) {
+    int minIndex = 0;
+    for (int i = 1; i < n; i++){
+        if(darray[i] < darray[minIndex]){
+            minIndex = i;
+        }
+    }
+    return minIndex;
+}
+
+void newSort(double darray[], int n) {
+    for(int i = 0; i < n - 1; i++){
+        int minIndex = minFind(darray + i, n - i);
+        swap(darray, i, i + minIndex);
+    }
+}
